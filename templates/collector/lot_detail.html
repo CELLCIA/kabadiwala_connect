@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <a href="{{ url_for('collector.dashboard') }}" class="btn btn-sm btn-outline-secondary mb-3"><i class="bi bi-arrow-left"></i> Back to Dashboard</a>
+        <h2 class="fw-bold">Lot #{{ lot.id }} Details</h2>
+        <span class="badge bg-primary p-2 fs-6">{{ lot.status }}</span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-5 mb-4">
+        <div class="glass-card text-center mb-4">
+            {% if lot.photo_filename %}
+            <img src="{{ url_for('static', filename='uploads/materials/' + lot.photo_filename) }}" class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">
+            {% else %}
+            <div class="bg-light d-flex align-items-center justify-content-center border rounded mb-3" style="height: 200px;">
+                <i class="bi bi-camera text-muted" style="font-size: 4rem;"></i>
+            </div>
+            {% endif %}
+            
+            <h4 class="fw-bold">{{ lot.material.name }}</h4>
+            <p class="text-muted mb-1">{{ lot.material.category }}</p>
+            <p class="fw-bold fs-5 text-success">Est. Value: ₹{{ "%.2f"|format(lot.estimated_value) }}</p>
+            
+            <div class="d-flex justify-content-around mt-3">
+                <div class="text-center">
+                    <span class="d-block small text-muted">Weight</span>
+                    <span class="fw-bold">{{ lot.weight }} kg</span>
+                </div>
+                <div class="text-center">
+                    <span class="d-block small text-muted">Condition</span>
+                    <span class="fw-bold">{{ lot.condition }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-7 mb-4">
+        <div class="glass-card mb-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-lightning-charge text-warning me-2"></i>Recycler Action</h5>
+            
+            {% if lot.transaction %}
+                <!-- Transaction exists -->
+                <div class="alert alert-success">
+                    <h5 class="alert-heading">Transaction Accepted!</h5>
+                    <p>You accepted an offer from <strong>{{ lot.transaction.recycler.name }}</strong> for ₹{{ lot.transaction.final_price }}.</p>
+                    <hr>
+                    <a href="{{ url_for('transaction.view_handover', tx_id=lot.transaction.id) }}" class="btn btn-success w-100">View Digital Handover & Timeline</a>
+                </div>
+            {% elif lot.offers %}
+                <!-- Offers exist but no transaction yet -->
+                <div class="alert alert-info">
+                    <h5 class="alert-heading">You have pending offers!</h5>
+                    <p>Recyclers have made offers for this lot.</p>
+                    <hr>
+                    <a href="{{ url_for('transaction.view_offers', lot_id=lot.id) }}" class="btn btn-primary w-100">Review & Accept Offers</a>
+                </div>
+            {% else %}
+                <!-- No offers yet -->
+                <div class="text-center p-4">
+                    <p class="text-muted">Waiting for Recycler Offers...</p>
+                    <a href="{{ url_for('collector.find_recyclers', lot_id=lot.id) }}" class="btn btn-glass-accent w-100">Find Suitable Recyclers</a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="glass-card">
+            <h5 class="fw-bold mb-3"><i class="bi bi-clock-history text-primary me-2"></i>Timeline</h5>
+            <div class="timeline">
+                <div class="timeline-event">
+                    <p class="fw-bold mb-0 text-primary">LOT CREATED</p>
+                    <p class="text-muted small mb-0">{{ lot.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                </div>
+                {% if lot.transaction %}
+                    {% for trace in lot.transaction.traceability %}
+                    <div class="timeline-event">
+                        <p class="fw-bold mb-0 text-primary">{{ trace.event }}</p>
+                        <p class="text-muted small mb-0">{{ trace.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

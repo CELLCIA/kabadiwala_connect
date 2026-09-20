@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center mb-4">
+    <div class="col-md-8">
+        <div class="glass-card mb-4 text-center">
+            <h2 class="fw-bold mb-3">Digital Handover</h2>
+            
+            <div class="p-4 mb-4 rounded bg-white border">
+                <p class="text-muted mb-1">Handover Verification Code</p>
+                <h1 class="display-3 fw-bold text-success ls-3">{{ tx.handover_id }}</h1>
+                <!-- We simulate QR Code by just showing the bold ID for now -->
+            </div>
+            
+            <div class="row text-start mt-4">
+                <div class="col-6">
+                    <p class="mb-1 text-muted">Material</p>
+                    <h5 class="fw-bold">{{ tx.lot.material.name }}</h5>
+                </div>
+                <div class="col-6">
+                    <p class="mb-1 text-muted">Weight</p>
+                    <h5 class="fw-bold">{{ tx.lot.weight }} kg</h5>
+                </div>
+                <div class="col-6 mt-3">
+                    <p class="mb-1 text-muted">Final Price</p>
+                    <h5 class="fw-bold text-success">₹{{ tx.final_price }}</h5>
+                </div>
+                <div class="col-6 mt-3">
+                    <p class="mb-1 text-muted">Current Status</p>
+                    <span class="badge bg-primary p-2">{{ tx.status }}</span>
+                </div>
+            </div>
+            
+            {% if current_user.role == 'recycler' %}
+            <hr class="my-4">
+            <h5 class="fw-bold mb-3 text-start">Update Status</h5>
+            <form method="POST" action="{{ url_for('transaction.update_status', tx_id=tx.id) }}" class="text-start">
+                <div class="input-group">
+                    <select class="form-select" name="status">
+                        <option value="PICKUP_REQUESTED" {% if tx.status == 'PICKUP_REQUESTED' %}selected{% endif %}>Pickup Requested</option>
+                        <option value="HANDED_OVER" {% if tx.status == 'HANDED_OVER' %}selected{% endif %}>Handed Over</option>
+                        <option value="RECYCLING" {% if tx.status == 'RECYCLING' %}selected{% endif %}>In Recycling Process</option>
+                        <option value="COMPLETED" {% if tx.status == 'COMPLETED' %}selected{% endif %}>Completed & Paid</option>
+                    </select>
+                    <button class="btn btn-glass-primary" type="submit">Update</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+        
+        <div class="glass-card">
+            <h4 class="fw-bold mb-4">Traceability Timeline</h4>
+            <div class="timeline">
+                {% for trace in tx.traceability %}
+                <div class="timeline-event">
+                    <p class="fw-bold mb-0 text-primary">{{ trace.event }}</p>
+                    <p class="text-muted small mb-0">{{ trace.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+                    {% if trace.actor %}
+                    <p class="text-muted small"><i class="bi bi-person me-1"></i>{{ trace.actor.name }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

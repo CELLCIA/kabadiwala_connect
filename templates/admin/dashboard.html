@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="fw-bold">Admin Dashboard</h2>
+        <p class="text-muted">Platform overview and analytics.</p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="glass-card text-center border-start border-4 border-primary p-3">
+            <h6 class="text-muted mb-1">Collectors</h6>
+            <h3 class="fw-bold text-primary mb-0">{{ c_count }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card text-center border-start border-4 border-success p-3">
+            <h6 class="text-muted mb-1">Recyclers</h6>
+            <h3 class="fw-bold text-success mb-0">{{ r_count }}</h3>
+            <small class="text-muted">{{ v_r_count }} Verified</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card text-center border-start border-4 border-warning p-3">
+            <h6 class="text-muted mb-1">Total Lots</h6>
+            <h3 class="fw-bold text-warning mb-0">{{ l_count }}</h3>
+            <small class="text-muted">{{ t_weight }} kg collected</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="glass-card text-center border-start border-4 border-info p-3">
+            <h6 class="text-muted mb-1">Transactions</h6>
+            <h3 class="fw-bold text-info mb-0">{{ a_tx_count + c_tx_count }}</h3>
+            <small class="text-muted">{{ a_tx_count }} Active | {{ c_tx_count }} Done</small>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="glass-card text-center border-start border-4 border-secondary p-3">
+            <h6 class="text-muted mb-1">Total Value</h6>
+            <h4 class="fw-bold mb-0">₹{{ "%.2f"|format(t_val) }}</h4>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="glass-card text-center border-start border-4 border-success p-3">
+            <h6 class="text-muted mb-1">Paid Amount</h6>
+            <h4 class="fw-bold text-success mb-0">₹{{ "%.2f"|format(p_val) }}</h4>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="glass-card text-center border-start border-4 border-danger p-3">
+            <h6 class="text-muted mb-1">Pending Payments</h6>
+            <h4 class="fw-bold text-danger mb-0">₹{{ "%.2f"|format(pend_val) }}</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="glass-card">
+            <h5 class="fw-bold mb-3">Lots by Material</h5>
+            <canvas id="sysChart"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="glass-card h-100">
+            <h5 class="fw-bold mb-3">Quick Actions</h5>
+            <div class="list-group list-group-flush" style="background: transparent;">
+                <a href="{{ url_for('admin.manage_users') }}" class="list-group-item list-group-item-action bg-transparent text-primary"><i class="bi bi-people me-2"></i> Manage Users</a>
+                <a href="{{ url_for('admin.verify_recyclers') }}" class="list-group-item list-group-item-action bg-transparent text-success"><i class="bi bi-check-circle me-2"></i> Verify Recyclers</a>
+                <a href="{{ url_for('admin.manage_prices') }}" class="list-group-item list-group-item-action bg-transparent text-warning"><i class="bi bi-tags me-2"></i> Update Prices</a>
+                <a href="{{ url_for('admin.export_data', dataset='transactions') }}" class="list-group-item list-group-item-action bg-transparent text-info"><i class="bi bi-download me-2"></i> Export Transactions (CSV)</a>
+                <a href="{{ url_for('admin.export_data', dataset='collectors') }}" class="list-group-item list-group-item-action bg-transparent text-secondary"><i class="bi bi-download me-2"></i> Export Collectors (CSV)</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const ctx = document.getElementById('sysChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: {{ mat_labels|tojson }},
+            datasets: [{
+                data: {{ mat_data|tojson }},
+                backgroundColor: ['#2e8b57', '#20b2aa', '#ffa500', '#ff6b6b', '#4ecdc4', '#45b7d1'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            cutout: '70%',
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+</script>
+{% endblock %}

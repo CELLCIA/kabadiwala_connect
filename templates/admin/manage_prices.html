@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-sm btn-outline-secondary mb-3"><i class="bi bi-arrow-left"></i> Back to Dashboard</a>
+        <h2 class="fw-bold">Manage Market Prices</h2>
+        <p class="text-muted">Update standard market prices for scrap materials. Price history is preserved.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-5 mb-4">
+        <div class="glass-card">
+            <h5 class="fw-bold mb-3">Update Price</h5>
+            <form method="POST" action="{{ url_for('admin.manage_prices') }}">
+                <div class="mb-3">
+                    <label class="form-label">Material</label>
+                    <select class="form-select" name="material_id" required>
+                        {% for m in materials %}
+                        <option value="{{ m.id }}">{{ m.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">New Price (₹)</label>
+                    <div class="input-group">
+                        <span class="input-group-text">₹</span>
+                        <input type="number" step="0.1" class="form-control" name="price" required>
+                        <span class="input-group-text">/ kg</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-warning w-100 fw-bold">Update Recorded Price</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="col-md-7 mb-4">
+        <div class="glass-card h-100">
+            <h5 class="fw-bold mb-3">Current Active Prices</h5>
+            <div class="table-responsive">
+                <table class="table table-hover" style="background: transparent;">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Current Price</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in latest_prices %}
+                        <tr>
+                            <td><i class="bi bi-{{ item.material.icon }} me-2 text-primary"></i><strong>{{ item.material.name }}</strong></td>
+                            <td class="text-success fw-bold">₹{{ "%.2f"|format(item.price.price) }} / {{ item.price.unit }}</td>
+                            <td class="text-muted small">{{ item.price.updated_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

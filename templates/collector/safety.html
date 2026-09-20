@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4 text-center">
+    <div class="col">
+        <h2 class="fw-bold"><i class="bi bi-shield-check text-success me-2"></i>Safety Center</h2>
+        <p class="text-muted">Best practices for handling e-waste safely.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6 col-lg-4">
+        <div class="glass-card text-center h-100 border-start border-4 border-danger">
+            <i class="bi bi-fire text-danger mb-3 d-block" style="font-size: 3rem;"></i>
+            <h5 class="fw-bold">Don't Burn Cables</h5>
+            <p class="text-muted">Burning cables releases toxic fumes that harm your lungs and the environment. Sell them as is.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-4">
+        <div class="glass-card text-center h-100 border-start border-4 border-danger">
+            <i class="bi bi-droplet-half text-danger mb-3 d-block" style="font-size: 3rem;"></i>
+            <h5 class="fw-bold">Avoid Acid Usage</h5>
+            <p class="text-muted">Using acid to extract metals is dangerous without proper facility and gear.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-4">
+        <div class="glass-card text-center h-100 border-start border-4 border-warning">
+            <i class="bi bi-battery-half text-warning mb-3 d-block" style="font-size: 3rem;"></i>
+            <h5 class="fw-bold">Handle Batteries Carefully</h5>
+            <p class="text-muted">Lithium batteries can catch fire if punctured. Store them in a cool, dry place.</p>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <div class="glass-card text-center h-100 border-start border-4 border-info">
+            <i class="bi bi-tv text-info mb-3 d-block" style="font-size: 3rem;"></i>
+            <h5 class="fw-bold">CRT Monitors</h5>
+            <p class="text-muted">Old monitors contain lead glass. Do not break the glass tubes.</p>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <div class="glass-card text-center h-100 border-start border-4 border-success">
+            <i class="bi bi-person-badge text-success mb-3 d-block" style="font-size: 3rem;"></i>
+            <h5 class="fw-bold">Protective Gear</h5>
+            <p class="text-muted">Always wear gloves and masks when handling dusty or sharp components.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

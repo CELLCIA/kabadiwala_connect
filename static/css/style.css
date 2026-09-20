@@ -1,0 +1,117 @@
+/* Glassmorphism & Light Pastel Variables */
+:root {
+    --bg-color: #f0f8ff; /* Light alice blue */
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    --primary-color: #2e8b57; /* Sea green */
+    --secondary-color: #20b2aa; /* Light sea green */
+    --accent-color: #ffa500; /* Orange */
+    --text-color: #333333;
+}
+
+body {
+    background: linear-gradient(135deg, #e0f2f1 0%, #bbdefb 100%);
+    background-attachment: fixed;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+/* Glassmorphism Card Utility */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.12);
+}
+
+/* Navbar */
+.navbar.glass-nav {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--primary-color) !important;
+}
+
+/* Buttons */
+.btn-glass-primary {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
+    transition: all 0.3s;
+}
+
+.btn-glass-primary:hover {
+    box-shadow: 0 6px 20px rgba(46, 139, 87, 0.5);
+    color: white;
+    transform: scale(1.02);
+}
+
+.btn-glass-accent {
+    background: linear-gradient(45deg, #ff8c00, #ffa500);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+}
+
+/* Big Action Cards */
+.action-card {
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-color);
+    display: block;
+}
+
+.action-card i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.action-card h5 {
+    font-weight: 600;
+}
+
+/* Timeline/Traceability */
+.timeline {
+    border-left: 3px solid var(--primary-color);
+    padding-left: 20px;
+    margin-left: 10px;
+}
+.timeline-event {
+    margin-bottom: 20px;
+    position: relative;
+}
+.timeline-event::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 5px;
+    width: 13px;
+    height: 13px;
+    background-color: white;
+    border: 3px solid var(--primary-color);
+    border-radius: 50%;
+}

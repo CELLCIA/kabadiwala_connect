@@ -1,6 +1,6 @@
 # Kabadiwala Connect
 
-A hackathon application bridging the gap between informal e-waste collectors and formal recycling facilities.
+An application bridging the gap between informal e-waste collectors and formal recycling facilities.
 
 ## Features
 - **Collector Dashboard:** Register e-waste lots with photos, weight, and condition.
